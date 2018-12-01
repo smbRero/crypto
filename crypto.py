@@ -31,6 +31,33 @@ def rsa_crypt(message,E,N):
 
 def rsa_decrypt(message,d,N):
     return pow(message,d,N)
+	
+def check_prime_root(g,p):
+	'''g - кандидат в первообразный корень, p - число'''
+	for l in range(1,p-1):
+		if pow(g,l,p) == 1:
+			return False
+	if pow(g,p-1,p)==1:
+			return True
+	else:
+			return False
+			
+def find_prime_root_for_prime(p):
+	for g in range(2,p):
+		if check_prime_root(g,p):
+			return g
+	return 0
 
-
-
+def elgamal_key_gen(p,g,x):
+	'''p - случайное простое число,g - первообразный корень p, x - случайное число от 1 до p-1'''
+	y = pow(g,x,p)
+	return y
+	
+def elgamal_crypt(message,p,g,y,k):
+	a = pow(g,k,p)
+	b = pow(y,k)*message % p
+	return a,b
+	
+def elgamal_decrypt(a,b,x,p):
+	message = b*pow(a,p-1-x) % p
+	return message
